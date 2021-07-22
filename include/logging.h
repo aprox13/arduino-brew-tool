@@ -1,7 +1,5 @@
 #define SERIAL_SPEED 9600
 
-#define __LOGS
-
 #ifdef __LOGS
 
 #define LOG(msg) (Serial.println(msg));

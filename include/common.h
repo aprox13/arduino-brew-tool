@@ -1,14 +1,7 @@
-#include <Arduino.h>
-#include <Wire.h>
-#include "logging.h"
+#pragma once
 
 #define SECOND 1000
 #define LCD_ADDR 0x3F
 
-String pretty_double(double d, uint8_t prec = 2)
-{
-    char temp_res[10];
-    dtostrf(d, 1, prec, temp_res);
-
-    return String(temp_res);
-}
+void pretty_double(double d, char *to, int prec = 2);
+void pretty_double2_prec(double d, char *to);

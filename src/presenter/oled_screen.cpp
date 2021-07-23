@@ -1,7 +1,6 @@
 #include "presenter/oled_screen.h"
 #include "presenter/screen.h"
 
-#ifdef ARDUINO_BUILD
 #include <SPI.h>
 #include <Arduino.h>
 #include <Wire.h>
@@ -46,5 +45,3 @@ void oled_screen::draw_flow_screen(double liters, double liters_per_min, long ti
 
   display.display();
 }
-
-#endif

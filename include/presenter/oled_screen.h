@@ -1,7 +1,6 @@
 #pragma once
 #include "presenter/screen.h"
 
-#ifdef ARDUINO_BUILD
 #include <Adafruit_SSD1306.h>
 
 class oled_screen : public screen
@@ -14,5 +13,3 @@ public:
 private:
   Adafruit_SSD1306 &display;
 };
-
-#endif

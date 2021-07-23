@@ -1,5 +1,4 @@
 
-#ifdef ARDUINO_BUILD
 #include <Arduino.h>
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
@@ -55,11 +54,3 @@ void loop()
    long now = millis();
    controller->process(now);
 }
-
-#else
-
-int main()
-{
-   return 0;
-}
-#endif

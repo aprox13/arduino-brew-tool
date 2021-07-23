@@ -1,4 +1,6 @@
 #include "controller/brew_controller.h"
+#include "logging.h"
+
 
 brew_controller::brew_controller(screen &screen,
                                  button_controller &btn,
@@ -21,6 +23,10 @@ void brew_controller::process(long now)
 void brew_controller::process_tick(long now)
 {
   const flow_state flow_data = _flow_controller.get_flow_state();
+
+  PART_LOG("Going to draw: v="); PART_LOG(flow_data.volume); 
+  PART_LOG(", speed="); PART_LOG(flow_data.speed); 
+  PART_LOG(", ticks="); LOG(flow_data.volume);
 
   if (_reset_btn.is_pressed())
     _flow_controller.reset();

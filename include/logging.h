@@ -7,4 +7,5 @@
 #define PART_LOG(msg) (Serial.print(msg))
 #else
 #define LOG(msg)
+#define PART_LOG(msg)
 #endif

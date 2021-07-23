@@ -18,6 +18,8 @@
 #define RESET_BNT_PIN ((uint8_t)5)
 #define FLOW_SPEED_CALC_PERIOD 1000
 
+#define CONTROLLER_TICK_DELAY (300)
+
 brew_controller *controller;
 
 void setup()
@@ -45,7 +47,7 @@ void setup()
    button_controller btn(RESET_BNT_PIN, *arduino, LOW);
    flow_controller fc(*arduino, FLOW_SPEED_CALC_PERIOD);
 
-   controller = new brew_controller(*scr, btn, fc, 200l);
+   controller = new brew_controller(*scr, btn, fc, CONTROLLER_TICK_DELAY);
 }
 
 void loop()

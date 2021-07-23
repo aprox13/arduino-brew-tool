@@ -20,7 +20,7 @@ void brew_controller::process(long now)
 
 void brew_controller::process_tick(long now)
 {
-  const auto flow_data = _flow_controller.get_flow_state();
+  const flow_state flow_data = _flow_controller.get_flow_state();
 
   if (_reset_btn.is_pressed())
     _flow_controller.reset();

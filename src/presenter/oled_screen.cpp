@@ -6,7 +6,6 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <StringBuilder.h>
 
 #include "common.h"
 #include "string.h"

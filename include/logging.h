@@ -1,14 +1,10 @@
 #define SERIAL_SPEED 9600
+#include <Arduino.h>
 
 #ifdef __LOGS
 
-#define LOG(msg) (Serial.println(msg));
+#define LOG(msg) (Serial.println(msg))
+#define PART_LOG(msg) (Serial.print(msg))
 #else
 #define LOG(msg)
-#endif
-
-#ifdef __LOGS
-#define INIT_LOGS() Serial.begin(SERAIL_SPEED)
-#else
-#define INIT_LOGS()
 #endif

@@ -8,7 +8,7 @@ class brew_controller
 {
 
 public:
-  brew_controller(screen &, button_controller &, flow_controller &, long);
+  brew_controller(screen &, button_controller &);
 
   void process(long);
 
@@ -18,7 +18,6 @@ protected:
 private:
   screen &_screen;
   button_controller &_reset_btn;
-  flow_controller &_flow_controller;
 
-  long _delay, _prev_processed;
+  long _prev_processed;
 };

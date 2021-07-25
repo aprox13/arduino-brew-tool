@@ -6,6 +6,7 @@
 #include "model/arduino.h"
 #include "model/arduino_proxy.h"
 #include "sensor/flow_sensor.h"
+#include <EEPROM.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
@@ -47,11 +48,17 @@ void setup()
    button_controller btn(RESET_BNT_PIN, *arduino, LOW);
 
    controller = new brew_controller(display, btn);
+
+   int cnt;
+   EEPROM.get(0, cnt);
+
+   Serial.println(cnt);
+
 }
 
 void loop()
 {
    long now = millis();
 
-   controller->process(now);
+   // controller->process(now);
 }

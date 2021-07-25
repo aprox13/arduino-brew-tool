@@ -6,6 +6,7 @@
 #include "controller/brew_controller.h"
 #include "logging.h"
 #include "sensor/flow_sensor.h"
+#include <EEPROM.h>
 
 #define MAIN_DELAY (100)
 #define CALIBS_N 2
@@ -125,9 +126,10 @@ void brew_controller::calib(long now)
       flow_sensor::reset();
     }
   } else {
-    long calibrated_ticks_in_liter = _calib_acc / CALIBS_N;
-
+    int calibrated_ticks_in_liter = _calib_acc / CALIBS_N;
+    _screen.setCursor(0,0);
     _screen.print(calibrated_ticks_in_liter);
+    EEPROM.put(0, calibrated_ticks_in_liter);
   }
 
   _screen.display();

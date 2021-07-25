@@ -1,33 +1,36 @@
-#include <stdlib.h>
+#include <SPI.h>
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #include "presenter/screen.h"
-#include "common.h"
-#include "string.h"
 #include "logging.h"
 
-void fill_flow_string(double liters,
-                      double liters_per_min,
-                      long ticks,
-                      char *volume_str,
-                      char *speed_str,
-                      char *ticks_str)
+const int text_size_1_height = 8;
+const int text_size_2_height = 16;
+
+screen::screen(Adafruit_SSD1306 &sc) : display(sc) {}
+
+void ensure_text_bound(Adafruit_SSD1306 &display, const String &str, uint16_t *w, uint16_t *h)
 {
-  char *buff = new char[10];
+  int16_t x = 0, y = 0, x1 = 0, y1 = 0;
+  display.getTextBounds(str, x, y, &x1, &y1, w, h);
+}
 
-  pretty_double2_prec(liters, buff);
-  strcpy(volume_str, buff);
-  strcat(volume_str, "L");
+void screen::draw_flow_screen(double liters, double liters_per_min, long ticks)
+{
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
 
-  PART_LOG("Got volume_str="); LOG(volume_str);
+  display.setCursor(0, display.height() - 1 - text_size_2_height);
 
-  pretty_double2_prec(liters_per_min, buff);
-  strcpy(speed_str, buff);
-  strcat(speed_str, " L/min");
+  display.print(liters);
+  display.print("L");
+  display.setCursor(display.getCursorX(), display.height() - 1 - text_size_1_height);
+  display.setTextSize(1);
+  display.print("/");
+  display.print(ticks);
 
-  PART_LOG("Got speed_str="); LOG(speed_str);
-
-  ltoa(ticks, buff, 10);
-  strcpy(ticks_str, buff);
-  strcat(ticks_str, " ticks");
-
-  PART_LOG("Got ticks_str="); LOG(ticks_str);
+  display.display();
 }

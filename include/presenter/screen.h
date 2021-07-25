@@ -1,14 +1,12 @@
 #pragma once
+#include <Adafruit_SSD1306.h>
+
 class screen
 {
+private:
+  Adafruit_SSD1306 &display;
 
 public:
-  virtual void draw_flow_screen(double liters, double liiters_per_min, long ticks) = 0;
+  screen(Adafruit_SSD1306 &);
+  void draw_flow_screen(double liters, double liiters_per_min, long ticks);
 };
-
-void fill_flow_string(double liters,
-                      double liters_per_min,
-                      long ticks,
-                      char *volume_str,
-                      char *speed_str,
-                      char *ticks_str);

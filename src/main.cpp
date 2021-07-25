@@ -1,8 +1,6 @@
-
 #include <Arduino.h>
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
-#include "presenter/oled_screen.h"
 #include "presenter/screen.h"
 #include "controller/brew_controller.h"
 #include "model/arduino.h"
@@ -20,9 +18,8 @@
 
 #define DELAY_PERIOD_MS 100
 
-
 brew_controller *controller;
-oled_screen *screen;
+screen *_screen;
 
 long prev_ticks = 0;
 
@@ -47,19 +44,15 @@ void setup()
    display.clearDisplay();
 
    arduino *arduino = new arduino_proxy();
-   screen = new oled_screen(display);
+   _screen = new screen(display);
    button_controller btn(RESET_BNT_PIN, *arduino, LOW);
-   flow_controller fc(*arduino, FLOW_SPEED_CALC_PERIOD);
+
+   controller = new brew_controller(*_screen, btn);
 }
 
 void loop()
 {
    long now = millis();
-   
-   if (now - prev_ticks > DELAY_PERIOD_MS) {
-      prev_ticks = now;
 
-      screen->draw_flow_screen(flow_sensor::liters(), 0, flow_sensor::get_ticks());
-   }
-
+   controller->process(now);
 }

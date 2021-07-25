@@ -30,7 +30,7 @@ brew_controller::brew_controller(Adafruit_SSD1306 &sc,
                                                            _reset_btn(btn)
 {
   _prev_processed = 0;
-  _state = BrewState::SHOW_FLOW;
+  _state = BrewState::CALIBRATION;
   _calib_step = 0;
 
   _calib_acc = 0;
@@ -48,7 +48,9 @@ void _internal_process(long now, long _delay, long &prev_counter, func_t process
 }
 
 void draw_volume(Adafruit_SSD1306 &sc, VolumeShowType type)
-{
+{ 
+  sc.setTextColor(WHITE);
+
   switch (type)
   {
   case VolumeShowType::LITERS:
@@ -89,12 +91,19 @@ void brew_controller::process(long now)
 
 void brew_controller::show_flow(long now, bool allow_reset)
 {
+  LOG("show flow");
   if (allow_reset && _reset_btn.is_pressed())
     flow_sensor::reset();
+  _screen.clearDisplay();
+  draw_volume(_screen, VolumeShowType::ALL);
+  _screen.display();
 }
 
 void brew_controller::calib(long now)
 {
+  _screen.clearDisplay();
+  _screen.setTextColor(WHITE);
+
   if (_calib_step != CALIBS_N)
   {
     if (!_reset_btn.is_pressed())
@@ -103,8 +112,7 @@ void brew_controller::calib(long now)
       _screen.setCursor(0, 0);
       _screen.print("Fill ");
       _screen.print(calibs[_calib_step]);
-      _screen.println("ml");
-      _screen.print("And press reset button");
+      _screen.println("ml and press reset button");
 
       draw_volume(_screen, VolumeShowType::TICKS);
     } else {
@@ -114,10 +122,13 @@ void brew_controller::calib(long now)
 
       _calib_step++;
       _calib_acc += in_liter_ticks;
+      flow_sensor::reset();
     }
   } else {
     long calibrated_ticks_in_liter = _calib_acc / CALIBS_N;
 
     _screen.print(calibrated_ticks_in_liter);
   }
+
+  _screen.display();
 }

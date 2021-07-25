@@ -34,3 +34,13 @@ void screen::draw_flow_screen(double liters, double liters_per_min, long ticks)
 
   display.display();
 }
+
+void screen::draw_calibration(long ml) {
+  display.setCursor(0, 0);
+  display.setTextSize(1);
+
+  display.print("Fill "); 
+  display.print(ml);
+  display.println("ml");
+  display.println("Press button to continue");
+}

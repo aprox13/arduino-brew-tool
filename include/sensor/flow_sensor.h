@@ -16,6 +16,8 @@ public:
 
   static long get_ticks();
 
+  static long get_ticks_per_liter();
+
 private:
 
   static volatile double _ticks;

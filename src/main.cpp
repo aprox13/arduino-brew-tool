@@ -44,10 +44,9 @@ void setup()
    display.clearDisplay();
 
    arduino *arduino = new arduino_proxy();
-   _screen = new screen(display);
    button_controller btn(RESET_BNT_PIN, *arduino, LOW);
 
-   controller = new brew_controller(*_screen, btn);
+   controller = new brew_controller(display, btn);
 }
 
 void loop()

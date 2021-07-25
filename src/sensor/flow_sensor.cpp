@@ -28,3 +28,7 @@ double flow_sensor::liters() {
 long flow_sensor::get_ticks() {
   return (long)_ticks;
 }
+
+long flow_sensor::get_ticks_per_liter() {
+  return (long)_ticks_per_liter;
+}

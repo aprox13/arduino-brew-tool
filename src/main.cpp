@@ -7,6 +7,7 @@
 #include "controller/brew_controller.h"
 #include "model/arduino.h"
 #include "model/arduino_proxy.h"
+#include "sensor/flow_sensor.h"
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
@@ -17,9 +18,13 @@
 #define RESET_BNT_PIN ((uint8_t)5)
 #define FLOW_SPEED_CALC_PERIOD 1000
 
-#define CONTROLLER_TICK_DELAY (300)
+#define DELAY_PERIOD_MS 100
+
 
 brew_controller *controller;
+oled_screen *screen;
+
+long prev_ticks = 0;
 
 void setup()
 {
@@ -37,20 +42,24 @@ void setup()
    pinMode(FLOW_SENSOR_PIN, INPUT_PULLUP);
    pinMode(RESET_BNT_PIN, INPUT_PULLUP);
 
-   attachInterrupt(digitalPinToInterrupt(FLOW_SENSOR_PIN), &arduino::handle_interrupts, RISING);
+   flow_sensor::attach(digitalPinToInterrupt(FLOW_SENSOR_PIN));
 
    display.clearDisplay();
 
    arduino *arduino = new arduino_proxy();
-   screen *scr = new oled_screen(display);
+   screen = new oled_screen(display);
    button_controller btn(RESET_BNT_PIN, *arduino, LOW);
    flow_controller fc(*arduino, FLOW_SPEED_CALC_PERIOD);
-
-   controller = new brew_controller(*scr, btn, fc, CONTROLLER_TICK_DELAY);
 }
 
 void loop()
 {
    long now = millis();
-   controller->process(now);
+   
+   if (now - prev_ticks > DELAY_PERIOD_MS) {
+      prev_ticks = now;
+
+      screen->draw_flow_screen(flow_sensor::liters(), 0, flow_sensor::get_ticks());
+   }
+
 }
